@@ -1,6 +1,8 @@
 import svgwrite
 import math
 
+## Everything is drawn logarithmically from the origin.
+
 def frange(x, y, jump):
     while x < y:
         yield x
@@ -9,10 +11,13 @@ def frange(x, y, jump):
 def logg(val):
     return math.log(val, 10)
 
+	
+# Draw object at angle R, distance dist
 def drawObjectR(dwg, diam, r, dist, diff, text = ""):
     rad = (r / 12) * math.pi
     drawObjectRad(dwg, diam, rad, dist, diff, text)
 
+# Draw object at angel rad and distance dist
 def drawObjectRad(dwg, diam, rad, dist, diff, text = ""):
     yy = dist * math.cos(rad)
     xx = dist * math.sin(rad)
@@ -45,7 +50,7 @@ def drawLine(dwg, x, y, x2, y2):
     yy2 = dist2*math.cos(rr2)
     dwg.add(dwg.line((cx+round(scal*xx1), cy+round(scal*yy1)), (cx+round(scal*xx2), cy+round(scal*yy2)), stroke=svgwrite.rgb(10, 10, 16, '%')))
         
-    
+# Draws an object att coordinates xpos, ypos
 def drawObject(dwg, diam, xpos, ypos, diff, text = ""):
     x=xpos + diam*math.cos(0)
     y=ypos + diam*math.sin(0)
@@ -74,11 +79,9 @@ def drawObject(dwg, diam, xpos, ypos, diff, text = ""):
         yy = dist*math.cos(rr)
 
         poly.append((cx+round(scal*xx), cy+round(scal*yy)))
-        #dwg.add(dwg.line(, (cx+round(scal*xx1), cy+round(scal*yy1)), stroke=svgwrite.rgb(10, 10, 16, '%')))
         xx1=xx
         yy1=yy
     dwg.add(dwg.polygon(poly,stroke='black', fill='none'))
-    #, stroke=svgwrite.rgb(10, 10, 16, '%')
     if (not text == ""):
         dwg.add(dwg.text(text, insert=(cx+round(scal*xx)+5, cy+round(scal*yy)), fill='black'))
     
@@ -89,7 +92,10 @@ scal = 18
 
 dwg = svgwrite.Drawing('test2.svg', profile='tiny')
 
+# Light year in kilometers
 kmperly = 9460730472580
+
+# Megaparsek in kilometers
 mpc = 3260000 * kmperly
 
 drawLineR(dwg, 0, 152098232)
@@ -110,7 +116,6 @@ drawObject(dwg, 1737*2, 0, -384399, 1, "Moon")
 drawObject(dwg, 1396840, 0, -152098232, 1, "Sun")
 #drawObjectRad(dwg, 1396840, 2, 152098232, 1)
 #drawObjectRad(dwg, 1396840, 3, 152098232, 1)
-
 
 # orbit of Neptune
 drawObject(dwg, 4503000000, 0, 152098232, 0.01, "Neptune Orbit")
@@ -168,8 +173,6 @@ drawObjectR(dwg, 550 * mpc, 3.25, 8000000000* kmperly, 0.01, "Eridanus Supervoid
 # Observable Universe
 drawObject(dwg, 4.35E+23, 0, 0, 0.01, "Observable Universe")
 
-
-
 # Local Void
 drawObjectR(dwg, 22.5*mpc, 18.6, 23*mpc , 0.01, "Local Void")
 
@@ -185,8 +188,6 @@ drawObjectR(dwg,  2.2*mpc, 12.5, 53800000*kmperly, 0.01, "Virgo cluster")
 #drawObject(dwg, 7300000000*kmperly, 0, 10000000000*kmperly, 0.01, "Hercules-Corona Borealis Great Wall")
 #CfA2 Great Wall
 #drawObject(dwg, 500000000*kmperly, 0, 200000000*kmperly, 0.01, "CfA2 Great Wall")
-
-
 
 dwg.save()
 print("done")
